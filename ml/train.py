@@ -1,3 +1,5 @@
+# Importando as Libs! #
+
 import pandas as pd
 from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
@@ -6,10 +8,10 @@ import urllib
 from sklearn.linear_model import LinearRegression
 import joblib
 
-# Carregar variáveis do .env
+# Carregando variáveis do .env #
 load_dotenv()
 
-# String de conexão
+# String de conexão #
 params = urllib.parse.quote_plus(
     f"DRIVER={{ODBC Driver 17 for SQL Server}};"
     f"SERVER={os.getenv('DB_SERVER')},{os.getenv('DB_PORT')};"
@@ -20,18 +22,18 @@ params = urllib.parse.quote_plus(
 
 engine = create_engine(f"mssql+pyodbc:///?odbc_connect={params}")
 
-# Ler dados da tabela
+# Leitura dos dados da tabela #
 df = pd.read_sql("SELECT Idade, Salario FROM Dados", engine)
 
-# Separar variáveis
+
 X = df[["Idade"]]
 y = df["Salario"]
 
-# Treinar modelo
+# Treinando o modelo #
 modelo = LinearRegression()
 modelo.fit(X, y)
 
-# Salvar modelo treinado
+# Salvando modelo treinado #
 joblib.dump(modelo, "ml/modelo.pkl")
 
-print("✅ Modelo treinado e salvo com sucesso!")
+print(" Modelo treinado e salvo com sucesso!")
